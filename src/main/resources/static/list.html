@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TODO List</title>
+</head>
+<body>
+  <h2>TODO List</h2>
+  <ul id="my-list"></ul>
+
+  <script type = "text/javascript">
+    const req = new XMLHttpRequest();
+
+    req.onload = () => {
+      try {
+        const todos = JSON.parse(req.responseText);
+
+        const listElement = document.getElementById("my-list");
+        todos.forEach(todo => {
+          const li = document.createElement("li");
+          li.textContent = `(${todo.id}) ${todo.title}: ${todo.description}`;
+          listElement.appendChild(li);
+        });
+      } catch (err) {
+        console.error("Failed to parse JSON", err);
+      }
+    };
+
+    req.open("GET", "http://localhost:8080/todos");
+    req.send();
+  </script>
+</body>
+</html>
